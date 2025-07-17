@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application de Révision d'Anglais</title>
+    <!-- Chargement de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuration de Tailwind pour utiliser la police Inter -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <!-- Chargement de React et ReactDOM depuis les CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Chargement de Babel pour la transpilation JSX en direct dans le navigateur -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Données des exercices
+        const exercisesData = {
+          lexical: [
+            {
+              title: "Inviting someone",
+              exercises: [
+                {
+                  id: 'lex_invite_1',
+                  type: 'multiple-choice',
+                  question: "Choose the best way to invite someone:",
+                  options: ["Do you want to come?", "Would you like to come?", "You come?", "Are you coming?"],
+                  correctAnswer: "Would you like to come?",
+                  feedback: "L'expression 'Would you like to come?' est une manière polie et courante d'inviter quelqu'un."
+                },
+                {
+                  id: 'lex_invite_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the invitation: 'How about ______ to the cinema tonight?'",
+                  prompt: "How about ______ to the cinema tonight?",
+                  correctAnswer: "going",
+                  feedback: "'How about' est suivi de la forme en -ing du verbe."
+                },
+                {
+                  id: 'lex_invite_3',
+                  type: 'multiple-choice',
+                  question: "Which phrase is used to invite someone to a specific event?",
+                  options: ["Let's go.", "Fancy going?", "Come on!", "You must come."],
+                  correctAnswer: "Fancy going?",
+                  feedback: "'Fancy going?' est une invitation informelle mais courante, souvent utilisée au Royaume-Uni."
+                },
+                {
+                  id: 'lex_invite_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the sentence: 'I'd like to ______ you to my party.'",
+                  prompt: "I'd like to ______ you to my party.",
+                  correctAnswer: "invite",
+                  feedback: "'Invite' est le verbe pour convier quelqu'un."
+                },
+                {
+                  id: 'lex_invite_5',
+                  type: 'multiple-choice',
+                  question: "What's a casual way to suggest an activity?",
+                  options: ["Shall we go?", "Would you care to join?", "I insist you come.", "Are you interested in joining?"],
+                  correctAnswer: "Shall we go?",
+                  feedback: "'Shall we go?' est une suggestion amicale et courante."
+                },
+                {
+                  id: 'lex_invite_6',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'We're having a barbecue. Would you like to ______?'",
+                  prompt: "We're having a barbecue. Would you like to ______?",
+                  correctAnswer: "join us",
+                  feedback: "'Join us' signifie se joindre à nous."
+                },
+                {
+                  id: 'lex_invite_7',
+                  type: 'multiple-choice',
+                  question: "Which is a more formal invitation?",
+                  options: ["Come over!", "Why not come?", "I'd be delighted if you could attend.", "Let's hang out."],
+                  correctAnswer: "I'd be delighted if you could attend.",
+                  feedback: "Cette phrase est très formelle et polie."
+                },
+                {
+                  id: 'lex_invite_8',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'Are you free ______ Saturday evening?'",
+                  prompt: "Are you free ______ Saturday evening?",
+                  correctAnswer: "on",
+                  feedback: "On utilise 'on' avec les jours de la semaine."
+                },
+                {
+                  id: 'lex_invite_9',
+                  type: 'multiple-choice',
+                  question: "What does 'Are you up for it?' mean?",
+                  options: ["Are you ready?", "Are you interested?", "Are you tall enough?", "Are you awake?"],
+                  correctAnswer: "Are you interested?",
+                  feedback: "'Are you up for it?' signifie 'Êtes-vous partant ?' ou 'Cela vous intéresse ?'."
+                },
+                {
+                  id: 'lex_invite_10',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'I was wondering if you'd like to ______ dinner with us.'",
+                  prompt: "I was wondering if you'd like to ______ dinner with us.",
+                  correctAnswer: "have",
+                  feedback: "'Have dinner' est l'expression correcte."
+                }
+              ]
+            },
+            {
+              title: "Accepting or refusing an invitation",
+              exercises: [
+                {
+                  id: 'lex_accept_1',
+                  type: 'multiple-choice',
+                  question: "How would you politely accept an invitation?",
+                  options: ["No problem.", "Sounds good! I'd love to.", "I accept.", "Okay."],
+                  correctAnswer: "Sounds good! I'd love to.",
+                  feedback: "'Sounds good! I'd love to.' est une manière chaleureuse et enthousiaste d'accepter."
+                },
+                {
+                  id: 'lex_refuse_1',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the refusal: 'I'm sorry, I can't. I already have ______.'",
+                  prompt: "I'm sorry, I can't. I already have ______.",
+                  correctAnswer: "plans",
+                  feedback: "'I already have plans' est une manière courante et polie de décliner une invitation."
+                },
+                {
+                  id: 'lex_accept_2',
+                  type: 'multiple-choice',
+                  question: "Which phrase expresses enthusiastic acceptance?",
+                  options: ["I guess so.", "That would be great!", "Maybe.", "If I have to."],
+                  correctAnswer: "That would be great!",
+                  feedback: "Cette phrase exprime un grand enthousiasme à l'idée d'accepter."
+                },
+                {
+                  id: 'lex_refuse_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the polite refusal: 'Thanks for the invitation, but I won't be able to ______.'",
+                  prompt: "Thanks for the invitation, but I won't be able to ______.",
+                  correctAnswer: "make it",
+                  feedback: "'Make it' signifie 'y arriver' ou 'être présent'."
+                },
+                {
+                  id: 'lex_accept_3',
+                  type: 'multiple-choice',
+                  question: "How do you accept and ask for more details?",
+                  options: ["Yes.", "Sure, tell me more.", "I'm coming.", "Count me in."],
+                  correctAnswer: "Sure, tell me more.",
+                  feedback: "Cette phrase accepte l'invitation tout en demandant des informations supplémentaires."
+                },
+                {
+                  id: 'lex_refuse_3',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the refusal: 'I'd love to, but I'm afraid I ______.'",
+                  prompt: "I'd love to, but I'm afraid I ______.",
+                  correctAnswer: "can't",
+                  feedback: "Une manière polie de refuser en exprimant le regret."
+                },
+                {
+                  id: 'lex_accept_4',
+                  type: 'multiple-choice',
+                  question: "Which of these is a casual acceptance?",
+                  options: ["I shall attend.", "Sounds like a plan!", "I accept your kind offer.", "It would be my pleasure."],
+                  correctAnswer: "Sounds like a plan!",
+                  feedback: "C'est une expression informelle pour accepter une suggestion."
+                },
+                {
+                  id: 'lex_refuse_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'Unfortunately, I'm already ______ that day.'",
+                  prompt: "Unfortunately, I'm already ______ that day.",
+                  correctAnswer: "busy",
+                  feedback: "On utilise 'busy' pour indiquer qu'on n'est pas disponible."
+                },
+                {
+                  id: 'lex_accept_5',
+                  type: 'multiple-choice',
+                  question: "What does 'Definitely!' imply?",
+                  options: ["Uncertainty", "Strong agreement", "Disagreement", "Polite refusal"],
+                  correctAnswer: "Strong agreement",
+                  feedback: "'Definitely!' exprime un accord fort et sans équivoque."
+                },
+                {
+                  id: 'lex_refuse_5',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'I appreciate the invitation, but I have a prior ______.'",
+                  prompt: "I appreciate the invitation, but I have a prior ______.",
+                  correctAnswer: "engagement",
+                  feedback: "'Prior engagement' est une manière formelle de dire que l'on a déjà un autre rendez-vous."
+                }
+              ]
+            },
+            {
+              title: "Talking about presents",
+              exercises: [
+                {
+                  id: 'lex_presents_1',
+                  type: 'multiple-choice',
+                  question: "What is a synonym for 'present'?",
+                  options: ["Gift", "Award", "Prize", "Bonus"],
+                  correctAnswer: "Gift",
+                  feedback: "'Gift' est le synonyme le plus courant de 'present'."
+                },
+                {
+                  id: 'lex_presents_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the sentence: 'She was so happy when she ______ her birthday present.'",
+                  prompt: "She was so happy when she ______ her birthday present.",
+                  correctAnswer: "opened",
+                  feedback: "'Opened' est le verbe utilisé lorsqu'on déballe un cadeau."
+                },
+                {
+                  id: 'lex_presents_3',
+                  type: 'multiple-choice',
+                  question: "What do you say when you give someone a present?",
+                  options: ["Here you go.", "Take this.", "It's for you.", "You must have this."],
+                  correctAnswer: "It's for you.",
+                  feedback: "'It's for you.' est une manière courante de présenter un cadeau."
+                },
+                {
+                  id: 'lex_presents_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'He ______ her a beautiful necklace for her anniversary.'",
+                  prompt: "He ______ her a beautiful necklace for her anniversary.",
+                  correctAnswer: "gave",
+                  feedback: "'Gave' est le passé de 'give' (donner)."
+                },
+                {
+                  id: 'lex_presents_5',
+                  type: 'multiple-choice',
+                  question: "What is a small gift given as a souvenir?",
+                  options: ["Reward", "Souvenir", "Token", "Prize"],
+                  correctAnswer: "Souvenir",
+                  feedback: "Un 'souvenir' est un objet rappelant un lieu ou un événement."
+                },
+                {
+                  id: 'lex_presents_6',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'She wrapped the ______ in colorful paper.'",
+                  prompt: "She wrapped the ______ in colorful paper.",
+                  correctAnswer: "present",
+                  feedback: "On emballe un 'present' (cadeau)."
+                },
+                {
+                  id: 'lex_presents_7',
+                  type: 'multiple-choice',
+                  question: "What is a gift given to celebrate a new baby?",
+                  options: ["Wedding gift", "Housewarming gift", "Baby shower gift", "Birthday gift"],
+                  correctAnswer: "Baby shower gift",
+                  feedback: "Un 'baby shower gift' est un cadeau offert lors d'une fête prénatale."
+                },
+                {
+                  id: 'lex_presents_8',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'They exchanged ______ on Christmas morning.'",
+                  prompt: "They exchanged ______ on Christmas morning.",
+                  correctAnswer: "gifts",
+                  feedback: "On échange des 'gifts' (cadeaux) à Noël."
+                },
+                {
+                  id: 'lex_presents_9',
+                  type: 'multiple-choice',
+                  question: "What does 'thoughtful gift' mean?",
+                  options: ["An expensive gift", "A gift chosen with care and consideration", "A gift bought quickly", "A gift that makes you think"],
+                  correctAnswer: "A gift chosen with care and consideration",
+                  feedback: "Un 'thoughtful gift' est un cadeau bien pensé."
+                },
+                {
+                  id: 'lex_presents_10',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'The best ______ is often something handmade.'",
+                  prompt: "The best ______ is often something handmade.",
+                  correctAnswer: "present",
+                  feedback: "Le meilleur 'present' (cadeau) est souvent fait à la main."
+                }
+              ]
+            },
+            {
+              title: "Extreme sports, emergency services, accidents, traffic features",
+              exercises: [
+                {
+                  id: 'lex_sports_1',
+                  type: 'multiple-choice',
+                  question: "Which of these is an extreme sport?",
+                  options: ["Swimming", "Chess", "Bungee jumping", "Running"],
+                  correctAnswer: "Bungee jumping",
+                  feedback: "Le saut à l'élastique est considéré comme un sport extrême en raison de son risque élevé et de l'adrénaline qu'il procure."
+                },
+                {
+                  id: 'lex_emergency_1',
+                  type: 'fill-in-the-blank',
+                  question: "If there's a fire, you should call the ______.",
+                  prompt: "If there's a fire, you should call the ______.",
+                  correctAnswer: "fire brigade",
+                  feedback: "La 'fire brigade' (ou 'fire department' en anglais américain) est le service d'urgence pour les incendies."
+                },
+                {
+                  id: 'lex_sports_2',
+                  type: 'multiple-choice',
+                  question: "What is the name of the sport where you jump from a plane with a parachute?",
+                  options: ["Scuba diving", "Skydiving", "Paragliding", "Hang gliding"],
+                  correctAnswer: "Skydiving",
+                  feedback: "Le 'skydiving' est le saut en parachute."
+                },
+                {
+                  id: 'lex_emergency_2',
+                  type: 'fill-in-the-blank',
+                  question: "In case of a medical emergency, you should call an ______.",
+                  prompt: "In case of a medical emergency, you should call an ______.",
+                  correctAnswer: "ambulance",
+                  feedback: "On appelle une 'ambulance' pour une urgence médicale."
+                },
+                {
+                  id: 'lex_accident_1',
+                  type: 'multiple-choice',
+                  question: "What is a minor collision between vehicles called?",
+                  options: ["Crash", "Accident", "Fender-bender", "Catastrophe"],
+                  correctAnswer: "Fender-bender",
+                  feedback: "Un 'fender-bender' est un léger accrochage entre véhicules."
+                },
+                {
+                  id: 'lex_traffic_1',
+                  type: 'fill-in-the-blank',
+                  question: "You must stop when the traffic light is ______.",
+                  prompt: "You must stop when the traffic light is ______.",
+                  correctAnswer: "red",
+                  feedback: "On s'arrête au feu rouge."
+                },
+                {
+                  id: 'lex_sports_3',
+                  type: 'multiple-choice',
+                  question: "Which extreme sport involves climbing icy surfaces?",
+                  options: ["Rock climbing", "Ice climbing", "Mountaineering", "Canyoning"],
+                  correctAnswer: "Ice climbing",
+                  feedback: "L''ice climbing' est l'escalade sur glace."
+                },
+                {
+                  id: 'lex_emergency_3',
+                  type: 'fill-in-the-blank',
+                  question: "The ______ arrived quickly after the car crash.",
+                  prompt: "The ______ arrived quickly after the car crash.",
+                  correctAnswer: "police",
+                  feedback: "La 'police' intervient après un accident de voiture."
+                },
+                {
+                  id: 'lex_accident_2',
+                  type: 'multiple-choice',
+                  question: "What is a sudden, unexpected event that causes damage or injury?",
+                  options: ["Incident", "Accident", "Event", "Occurrence"],
+                  correctAnswer: "Accident",
+                  feedback: "Un 'accident' est un événement imprévu causant des dommages ou des blessures."
+                },
+                {
+                  id: 'lex_traffic_2',
+                  type: 'fill-in-the-blank',
+                  question: "A crosswalk is also known as a ______ crossing.",
+                  prompt: "A crosswalk is also known as a ______ crossing.",
+                  correctAnswer: "zebra",
+                  feedback: "Un passage piéton est aussi appelé 'zebra crossing' en raison de ses rayures."
+                }
+              ]
+            }
+          ],
+          grammatical: [
+            {
+              title: "Present simple and continuous",
+              exercises: [
+                {
+                  id: 'gram_present_1',
+                  type: 'multiple-choice',
+                  question: "Which sentence uses the Present Simple correctly?",
+                  options: ["I am eating now.", "She usually eats breakfast at 7 AM.", "They are playing football yesterday.", "He is go to school every day."],
+                  correctAnswer: "She usually eats breakfast at 7 AM.",
+                  feedback: "Le Present Simple est utilisé pour les actions habituelles. 'Usually' indique une habitude."
+                },
+                {
+                  id: 'gram_present_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the sentence with the Present Continuous: 'Look! They ______ (play) in the park.'",
+                  prompt: "Look! They ______ (play) in the park.",
+                  correctAnswer: "are playing",
+                  feedback: "Le Present Continuous est utilisé pour les actions en cours. 'Look!' indique une action immédiate."
+                },
+                {
+                  id: 'gram_present_3',
+                  type: 'multiple-choice',
+                  question: "Choose the correct sentence:",
+                  options: ["He watch TV every night.", "He watches TV every night.", "He is watching TV every night.", "He watchs TV every night."],
+                  correctAnswer: "He watches TV every night.",
+                  feedback: "Au Present Simple, pour la 3e personne du singulier, on ajoute '-es' aux verbes se terminant par -ch, -sh, -s, -x, -z, -o."
+                },
+                {
+                  id: 'gram_present_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'I ______ (not/like) coffee.'",
+                  prompt: "I ______ (not/like) coffee.",
+                  correctAnswer: "don't like",
+                  feedback: "Au Present Simple négatif, on utilise 'do not' ou 'don't'."
+                },
+                {
+                  id: 'gram_present_5',
+                  type: 'multiple-choice',
+                  question: "Which sentence describes an action happening right now?",
+                  options: ["She studies every day.", "She is studying right now.", "She studied yesterday.", "She will study tomorrow."],
+                  correctAnswer: "She is studying right now.",
+                  feedback: "Le Present Continuous est utilisé pour les actions qui se déroulent au moment où l'on parle."
+                },
+                {
+                  id: 'gram_present_6',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'They ______ (work) on a new project this month.'",
+                  prompt: "They ______ (work) on a new project this month.",
+                  correctAnswer: "are working",
+                  feedback: "Le Present Continuous peut aussi décrire des actions temporaires qui se déroulent autour du moment présent."
+                },
+                {
+                  id: 'gram_present_7',
+                  type: 'multiple-choice',
+                  question: "What is the correct question form in Present Simple?",
+                  options: ["Does she speak French?", "Is she speak French?", "Speak she French?", "She speaks French?"],
+                  correctAnswer: "Does she speak French?",
+                  feedback: "Au Present Simple, on utilise 'Do/Does' pour former les questions."
+                },
+                {
+                  id: 'gram_present_8',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'The sun ______ (rise) in the east.'",
+                  prompt: "The sun ______ (rise) in the east.",
+                  correctAnswer: "rises",
+                  feedback: "Le Present Simple est utilisé pour les faits généraux et les vérités universelles."
+                },
+                {
+                  id: 'gram_present_9',
+                  type: 'multiple-choice',
+                  question: "Which sentence is incorrect?",
+                  options: ["I am reading a book.", "He is sleeping.", "They are watching TV.", "She is liking chocolate."],
+                  correctAnswer: "She is liking chocolate.",
+                  feedback: "Les verbes d'état (comme 'like', 'love', 'hate', 'know', 'believe') ne sont généralement pas utilisés au Present Continuous."
+                },
+                {
+                  id: 'gram_present_10',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'What ______ you ______ (do) right now?'",
+                  prompt: "What ______ you ______ (do) right now?",
+                  correctAnswer: "are, doing",
+                  feedback: "Question au Present Continuous pour une action en cours."
+                }
+              ]
+            },
+            {
+              title: "Past simple and continuous",
+              exercises: [
+                {
+                  id: 'gram_past_1',
+                  type: 'multiple-choice',
+                  question: "Which sentence uses the Past Simple correctly?",
+                  options: ["I was watching TV when she called.", "She is going to the shop yesterday.", "They played football now.", "He went to Paris last year."],
+                  correctAnswer: "He went to Paris last year.",
+                  feedback: "Le Past Simple est utilisé pour les actions terminées dans le passé. 'Last year' indique un moment précis dans le passé."
+                },
+                {
+                  id: 'gram_past_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the sentence with the Past Continuous: 'While I ______ (read), my phone rang.'",
+                  prompt: "While I ______ (read), my phone rang.",
+                  correctAnswer: "was reading",
+                  feedback: "Le Past Continuous est utilisé pour une action continue dans le passé, interrompue par une autre action."
+                },
+                {
+                  id: 'gram_past_3',
+                  type: 'multiple-choice',
+                  question: "Choose the correct Past Simple form of 'to see'.",
+                  options: ["Saw", "Seen", "Seed", "Sees"],
+                  correctAnswer: "Saw",
+                  feedback: "'Saw' est la forme passée de 'to see'."
+                },
+                {
+                  id: 'gram_past_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'They ______ (not/go) to the party last night.'",
+                  prompt: "They ______ (not/go) to the party last night.",
+                  correctAnswer: "didn't go",
+                  feedback: "Au Past Simple négatif, on utilise 'did not' ou 'didn't'."
+                },
+                {
+                  id: 'gram_past_5',
+                  type: 'multiple-choice',
+                  question: "Which sentence shows an action in progress at a specific time in the past?",
+                  options: ["I cooked dinner at 7 PM.", "I was cooking dinner at 7 PM.", "I have cooked dinner at 7 PM.", "I cook dinner at 7 PM."],
+                  correctAnswer: "I was cooking dinner at 7 PM.",
+                  feedback: "Le Past Continuous est utilisé pour une action en cours à un moment précis dans le passé."
+                },
+                {
+                  id: 'gram_past_6',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'She ______ (sleep) when the doorbell rang.'",
+                  prompt: "She ______ (sleep) when the doorbell rang.",
+                  correctAnswer: "was sleeping",
+                  feedback: "Action continue ('was sleeping') interrompue par une action courte ('rang')."
+                },
+                {
+                  id: 'gram_past_7',
+                  type: 'multiple-choice',
+                  question: "What is the correct question form in Past Simple?",
+                  options: ["Did you eat breakfast?", "Were you eat breakfast?", "Ate you breakfast?", "You ate breakfast?"],
+                  correctAnswer: "Did you eat breakfast?",
+                  feedback: "Au Past Simple, on utilise 'Did' pour former les questions."
+                },
+                {
+                  id: 'gram_past_8',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'We ______ (watch) a movie when the power went out.'",
+                  prompt: "We ______ (watch) a movie when the power went out.",
+                  correctAnswer: "were watching",
+                  feedback: "Action continue ('were watching') interrompue par une autre action ('went out')."
+                },
+                {
+                  id: 'gram_past_9',
+                  type: 'multiple-choice',
+                  question: "Which sentence describes a series of completed actions in the past?",
+                  options: ["I was waking up, having breakfast, and going to work.", "I woke up, had breakfast, and went to work.", "I have woken up, had breakfast, and gone to work.", "I am waking up, having breakfast, and going to work."],
+                  correctAnswer: "I woke up, had breakfast, and went to work.",
+                  feedback: "Le Past Simple est utilisé pour une séquence d'actions terminées dans le passé."
+                },
+                {
+                  id: 'gram_past_10',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'Yesterday, I ______ (meet) an old friend.'",
+                  prompt: "Yesterday, I ______ (meet) an old friend.",
+                  correctAnswer: "met",
+                  feedback: "'Met' est le passé de 'meet'."
+                }
+              ]
+            },
+            {
+              title: "Plural",
+              exercises: [
+                {
+                  id: 'gram_plural_1',
+                  type: 'multiple-choice',
+                  question: "What is the plural of 'child'?",
+                  options: ["Childs", "Childrens", "Children", "Childes"],
+                  correctAnswer: "Children",
+                  feedback: "'Children' est une forme plurielle irrégulière de 'child'."
+                },
+                {
+                  id: 'gram_plural_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the sentence: 'There are many ______ (mouse) in the old house.'",
+                  prompt: "There are many ______ (mouse) in the old house.",
+                  correctAnswer: "mice",
+                  feedback: "'Mice' est la forme plurielle irrégulière de 'mouse'."
+                },
+                {
+                  id: 'gram_plural_3',
+                  type: 'multiple-choice',
+                  question: "What is the plural of 'foot'?",
+                  options: ["Foots", "Feets", "Feet", "Footes"],
+                  correctAnswer: "Feet",
+                  feedback: "'Feet' est le pluriel irrégulier de 'foot'."
+                },
+                {
+                  id: 'gram_plural_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'I saw two ______ (man) walking down the street.'",
+                  prompt: "I saw two ______ (man) walking down the street.",
+                  correctAnswer: "men",
+                  feedback: "'Men' est le pluriel irrégulier de 'man'."
+                },
+                {
+                  id: 'gram_plural_5',
+                  type: 'multiple-choice',
+                  question: "What is the plural of 'city'?",
+                  options: ["Citys", "Cities", "Cityes", "Citis"],
+                  correctAnswer: "Cities",
+                  feedback: "Les noms se terminant par une consonne + 'y' changent le 'y' en 'i' et ajoutent '-es'."
+                },
+                {
+                  id: 'gram_plural_6',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'She has three ______ (tooth) missing.'",
+                  prompt: "She has three ______ (tooth) missing.",
+                  correctAnswer: "teeth",
+                  feedback: "'Teeth' est le pluriel irrégulier de 'tooth'."
+                },
+                {
+                  id: 'gram_plural_7',
+                  type: 'multiple-choice',
+                  question: "What is the plural of 'sheep'?",
+                  options: ["Sheeps", "Sheep", "Sheepies", "Sheepen"],
+                  correctAnswer: "Sheep",
+                  feedback: "'Sheep' est un nom dont la forme plurielle est identique à la forme singulière."
+                },
+                {
+                  id: 'gram_plural_8',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'There are many ______ (person) at the concert.'",
+                  prompt: "There are many ______ (person) at the concert.",
+                  correctAnswer: "people",
+                  feedback: "'People' est le pluriel de 'person'."
+                },
+                {
+                  id: 'gram_plural_9',
+                  type: 'multiple-choice',
+                  question: "What is the plural of 'knife'?",
+                  options: ["Knifes", "Knives", "Knifves", "Knifees"],
+                  correctAnswer: "Knives",
+                  feedback: "Les noms se terminant par '-f' ou '-fe' changent souvent en '-ves' au pluriel."
+                },
+                {
+                  id: 'gram_plural_10',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'I bought two new ______ (box) for my books.'",
+                  prompt: "I bought two new ______ (box) for my books.",
+                  correctAnswer: "boxes",
+                  feedback: "Les noms se terminant par -x, -ch, -sh, -s, -z ajoutent '-es' au pluriel."
+                }
+              ]
+            },
+            {
+              title: "Question tags",
+              exercises: [
+                {
+                  id: 'gram_qtag_1',
+                  type: 'multiple-choice',
+                  question: "Add the correct question tag: 'You are happy, ______?'",
+                  options: ["are you", "aren't you", "do you", "don't you"],
+                  correctAnswer: "aren't you",
+                  feedback: "Si la proposition principale est positive, le question tag est négatif. L'auxiliaire 'are' est utilisé."
+                },
+                {
+                  id: 'gram_qtag_2',
+                  type: 'fill-in-the-blank',
+                  question: "Add the correct question tag: 'He speaks English, ______?'",
+                  prompt: "He speaks English, ______?",
+                  correctAnswer: "doesn't he",
+                  feedback: "Pour le Present Simple avec 'he/she/it', utilisez 'does' dans le question tag. Comme la proposition principale est positive, le tag est négatif."
+                },
+                {
+                  id: 'gram_qtag_3',
+                  type: 'multiple-choice',
+                  question: "Add the correct question tag: 'She didn't come, ______?'",
+                  options: ["did she", "didn't she", "does she", "is she"],
+                  correctAnswer: "did she",
+                  feedback: "Si la proposition principale est négative, le question tag est positif. L'auxiliaire 'did' est utilisé."
+                },
+                {
+                  id: 'gram_qtag_4',
+                  type: 'fill-in-the-blank',
+                  question: "Add the correct question tag: 'It's a beautiful day, ______?'",
+                  prompt: "It's a beautiful day, ______?",
+                  correctAnswer: "isn't it",
+                  feedback: "L'auxiliaire est 'is', la proposition principale est positive, donc le tag est négatif."
+                },
+                {
+                  id: 'gram_qtag_5',
+                  type: 'multiple-choice',
+                  question: "Add the correct question tag: 'You can swim, ______?'",
+                  options: ["can you", "can't you", "do you", "don't you"],
+                  correctAnswer: "can't you",
+                  feedback: "L'auxiliaire est 'can', la proposition principale est positive, donc le tag est négatif."
+                },
+                {
+                  id: 'gram_qtag_6',
+                  type: 'fill-in-the-blank',
+                  question: "Add the correct question tag: 'Let's go, ______?'",
+                  prompt: "Let's go, ______?",
+                  correctAnswer: "shall we",
+                  feedback: "Pour les suggestions avec 'Let's', le question tag est 'shall we'."
+                },
+                {
+                  id: 'gram_qtag_7',
+                  type: 'multiple-choice',
+                  question: "Add the correct question tag: 'You haven't finished, ______?'",
+                  options: ["have you", "haven't you", "do you", "don't you"],
+                  correctAnswer: "have you",
+                  feedback: "L'auxiliaire est 'have', la proposition principale est négative, donc le tag est positif."
+                },
+                {
+                  id: 'gram_qtag_8',
+                  type: 'fill-in-the-blank',
+                  question: "Add the correct question tag: 'He will come, ______?'",
+                  prompt: "He will come, ______?",
+                  correctAnswer: "won't he",
+                  feedback: "L'auxiliaire est 'will', la proposition principale est positive, donc le tag est négatif ('won't')."
+                },
+                {
+                  id: 'gram_qtag_9',
+                  type: 'multiple-choice',
+                  question: "Add the correct question tag: 'There are many people, ______?'",
+                  options: ["are there", "aren't there", "is there", "isn't there"],
+                  correctAnswer: "aren't there",
+                  feedback: "Le sujet du tag est 'there' et l'auxiliaire est 'are'."
+                },
+                {
+                  id: 'gram_qtag_10',
+                  type: 'fill-in-the-blank',
+                  question: "Add the correct question tag: 'You would like some tea, ______?'",
+                  prompt: "You would like some tea, ______?",
+                  correctAnswer: "wouldn't you",
+                  feedback: "L'auxiliaire est 'would', la proposition principale est positive, donc le tag est négatif."
+                }
+              ]
+            },
+            {
+              title: "Indefinite pronouns",
+              exercises: [
+                {
+                  id: 'gram_indef_1',
+                  type: 'multiple-choice',
+                  question: "Choose the correct indefinite pronoun: 'I don't have ______ money.'",
+                  options: ["some", "any", "no", "every"],
+                  correctAnswer: "any",
+                  feedback: "'Any' est utilisé dans les phrases négatives et interrogatives."
+                },
+                {
+                  id: 'gram_indef_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the sentence: '______ knows the answer to this question.' (Meaning 'everyone')",
+                  prompt: "______ knows the answer to this question.",
+                  correctAnswer: "Everybody",
+                  feedback: "'Everybody' signifie 'toutes les personnes' et prend un verbe au singulier."
+                },
+                {
+                  id: 'gram_indef_3',
+                  type: 'multiple-choice',
+                  question: "Which pronoun refers to a non-specific thing?",
+                  options: ["Someone", "Something", "Somewhere", "Somebody"],
+                  correctAnswer: "Something",
+                  feedback: "'Something' fait référence à une chose non spécifique."
+                },
+                {
+                  id: 'gram_indef_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'Is there ______ in the room?'",
+                  prompt: "Is there ______ in the room?",
+                  correctAnswer: "anyone",
+                  feedback: "'Anyone' est utilisé dans les questions."
+                },
+                {
+                  id: 'gram_indef_5',
+                  type: 'multiple-choice',
+                  question: "Which sentence correctly uses 'nothing'?",
+                  options: ["I saw nothing.", "I didn't see nothing.", "I saw anything.", "I didn't see anything."],
+                  correctAnswer: "I saw nothing.",
+                  feedback: "On ne peut pas avoir de double négation en anglais. 'I saw nothing' est correct."
+                },
+                {
+                  id: 'gram_indef_6',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'I want to go ______ warm for my holidays.'",
+                  prompt: "I want to go ______ warm for my holidays.",
+                  correctAnswer: "somewhere",
+                  feedback: "'Somewhere' fait référence à un lieu non spécifique."
+                },
+                {
+                  id: 'gram_indef_7',
+                  type: 'multiple-choice',
+                  question: "Which pronoun means 'no person'?",
+                  options: ["No one", "Anyone", "Someone", "Everyone"],
+                  correctAnswer: "No one",
+                  feedback: "'No one' signifie 'personne'."
+                },
+                {
+                  id: 'gram_indef_8',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: '______ knows the trouble I've seen.'",
+                  prompt: "______ knows the trouble I've seen.",
+                  correctAnswer: "Nobody",
+                  feedback: "'Nobody' est un pronom indéfini signifiant 'personne'."
+                },
+                {
+                  id: 'gram_indef_9',
+                  type: 'multiple-choice',
+                  question: "Which of these pronouns is always singular?",
+                  options: ["Both", "Many", "Several", "Each"],
+                  correctAnswer: "Each",
+                  feedback: "'Each' est toujours singulier."
+                },
+                {
+                  id: 'gram_indef_10',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'I have ______ to tell you.'",
+                  prompt: "I have ______ to tell you.",
+                  correctAnswer: "something",
+                  feedback: "'Something' est utilisé dans les phrases affirmatives."
+                }
+              ]
+            },
+            {
+              title: "Adverbs",
+              exercises: [
+                {
+                  id: 'gram_adverbs_1',
+                  type: 'multiple-choice',
+                  question: "Which word is an adverb?",
+                  options: ["Quick", "Quickly", "Fast", "Good"],
+                  correctAnswer: "Quickly",
+                  feedback: "Les adverbes se terminent souvent par -ly et décrivent les verbes, les adjectifs ou d'autres adverbes. 'Fast' peut être à la fois un adjectif et un adverbe, mais 'quickly' est exclusivement un adverbe."
+                },
+                {
+                  id: 'gram_adverbs_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the sentence: 'She sings very ______.' (Use the adverb form of 'beautiful')",
+                  prompt: "She sings very ______.",
+                  correctAnswer: "beautifully",
+                  feedback: "La forme adverbiale de 'beautiful' est 'beautifully'."
+                },
+                {
+                  id: 'gram_adverbs_3',
+                  type: 'multiple-choice',
+                  question: "Where should the adverb 'always' be placed in 'He is late'?",
+                  options: ["He always is late.", "He is always late.", "Always he is late.", "He is late always."],
+                  correctAnswer: "He is always late.",
+                  feedback: "Les adverbes de fréquence (comme 'always') se placent généralement après le verbe 'to be' et avant les autres verbes."
+                },
+                {
+                  id: 'gram_adverbs_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'He drives ______.' (Use the adverb form of 'careful')",
+                  prompt: "He drives ______.",
+                  correctAnswer: "carefully",
+                  feedback: "La forme adverbiale de 'careful' est 'carefully'."
+                },
+                {
+                  id: 'gram_adverbs_5',
+                  type: 'multiple-choice',
+                  question: "Which adverb describes how an action is done?",
+                  options: ["Yesterday", "Here", "Loudly", "Very"],
+                  correctAnswer: "Loudly",
+                  feedback: "'Loudly' est un adverbe de manière."
+                },
+                {
+                  id: 'gram_adverbs_6',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'She speaks English ______.' (Use the adverb form of 'fluent')",
+                  prompt: "She speaks English ______.",
+                  correctAnswer: "fluently",
+                  feedback: "La forme adverbiale de 'fluent' est 'fluently'."
+                },
+                {
+                  id: 'gram_adverbs_7',
+                  type: 'multiple-choice',
+                  question: "Which adverb indicates frequency?",
+                  options: ["Slowly", "Often", "Upstairs", "Soon"],
+                  correctAnswer: "Often",
+                  feedback: "'Often' est un adverbe de fréquence."
+                },
+                {
+                  id: 'gram_adverbs_8',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'I arrived ______ late for the meeting.'",
+                  prompt: "I arrived ______ late for the meeting.",
+                  correctAnswer: "very",
+                  feedback: "'Very' est un adverbe d'intensité, modifiant l'adverbe 'late'."
+                },
+                {
+                  id: 'gram_adverbs_9',
+                  type: 'multiple-choice',
+                  question: "Which adverb describes a place?",
+                  options: ["Happily", "Never", "Outside", "Quickly"],
+                  correctAnswer: "Outside",
+                  feedback: "'Outside' est un adverbe de lieu."
+                },
+                {
+                  id: 'gram_adverbs_10',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'He finished his homework ______.' (Use the adverb form of 'easy')",
+                  prompt: "He finished his homework ______.",
+                  correctAnswer: "easily",
+                  feedback: "La forme adverbiale de 'easy' est 'easily'."
+                }
+              ]
+            },
+            {
+              title: "Future tenses",
+              exercises: [
+                {
+                  id: 'gram_future_1',
+                  type: 'multiple-choice',
+                  question: "Which sentence uses 'will' for a prediction?",
+                  options: ["I am going to visit my aunt tomorrow.", "It will probably rain later.", "We are having dinner at 7 PM.", "She is flying to London next week."],
+                  correctAnswer: "It will probably rain later.",
+                  feedback: "'Will' est utilisé pour les prédictions, surtout avec des adverbes comme 'probably'."
+                },
+                {
+                  id: 'gram_future_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the sentence with 'be going to': 'They ______ (build) a new school next year.'",
+                  prompt: "They ______ (build) a new school next year.",
+                  correctAnswer: "are going to build",
+                  feedback: "'Be going to' est utilisé pour les plans ou les intentions."
+                },
+                {
+                  id: 'gram_future_3',
+                  type: 'multiple-choice',
+                  question: "Which sentence expresses a spontaneous decision?",
+                  options: ["I'm going to buy a new car.", "I'm buying a new car tomorrow.", "I will buy a new car.", "I buy a new car."],
+                  correctAnswer: "I will buy a new car.",
+                  feedback: "'Will' est utilisé pour les décisions spontanées prises au moment de parler."
+                },
+                {
+                  id: 'gram_future_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'The train ______ (arrive) at 3 PM.' (timetable)",
+                  prompt: "The train ______ (arrive) at 3 PM.",
+                  correctAnswer: "arrives",
+                  feedback: "Le Present Simple est utilisé pour les horaires et les programmes fixes."
+                },
+                {
+                  id: 'gram_future_5',
+                  type: 'multiple-choice',
+                  question: "Which tense is used for arrangements in the near future?",
+                  options: ["Future Simple (will)", "Present Simple", "Present Continuous", "Future Continuous"],
+                  correctAnswer: "Present Continuous",
+                  feedback: "Le Present Continuous est souvent utilisé pour les arrangements futurs déjà décidés."
+                },
+                {
+                  id: 'gram_future_6',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'By this time next year, I ______ (live) in New York.'",
+                  prompt: "By this time next year, I ______ (live) in New York.",
+                  correctAnswer: "will be living",
+                  feedback: "Le Future Continuous est utilisé pour une action qui sera en cours à un moment donné dans le futur."
+                },
+                {
+                  id: 'gram_future_7',
+                  type: 'multiple-choice',
+                  question: "Which sentence indicates a strong intention?",
+                  options: ["I will probably go.", "I might go.", "I am going to go.", "I go."],
+                  correctAnswer: "I am going to go.",
+                  feedback: "'Be going to' exprime une intention forte ou une prédiction basée sur des preuves."
+                },
+                {
+                  id: 'gram_future_8',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'I think she ______ (pass) the exam.'",
+                  prompt: "I think she ______ (pass) the exam.",
+                  correctAnswer: "will pass",
+                  feedback: "'Will' est utilisé pour les prédictions basées sur une opinion personnelle."
+                },
+                {
+                  id: 'gram_future_9',
+                  type: 'multiple-choice',
+                  question: "What is the function of 'will' in 'I will help you'?",
+                  options: ["Prediction", "Spontaneous decision/offer", "Arrangement", "Fixed plan"],
+                  correctAnswer: "Spontaneous decision/offer",
+                  feedback: "'Will' est utilisé pour faire des offres ou des promesses spontanées."
+                },
+                {
+                  id: 'gram_future_10',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'We ______ (have) a party next Friday.' (arrangement)",
+                  prompt: "We ______ (have) a party next Friday.",
+                  correctAnswer: "are having",
+                  feedback: "Le Present Continuous est utilisé pour les arrangements futurs."
+                }
+              ]
+            },
+            {
+              title: "Comparatives and superlatives",
+              exercises: [
+                {
+                  id: 'gram_comp_1',
+                  type: 'multiple-choice',
+                  question: "Choose the correct comparative form: 'This book is ______ than that one.'",
+                  options: ["interesting", "more interesting", "most interesting", "interestinger"],
+                  correctAnswer: "more interesting",
+                  feedback: "Pour les adjectifs longs (3 syllabes ou plus), utilisez 'more' pour la forme comparative."
+                },
+                {
+                  id: 'gram_super_1',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the sentence with the superlative form: 'She is the ______ (tall) person in the class.'",
+                  prompt: "She is the ______ (tall) person in the class.",
+                  correctAnswer: "tallest",
+                  feedback: "Pour les adjectifs courts, ajoutez '-est' pour la forme superlative."
+                },
+                {
+                  id: 'gram_comp_2',
+                  type: 'multiple-choice',
+                  question: "What is the comparative form of 'good'?",
+                  options: ["Gooder", "More good", "Better", "Best"],
+                  correctAnswer: "Better",
+                  feedback: "'Good' est un adjectif irrégulier, sa forme comparative est 'better'."
+                },
+                {
+                  id: 'gram_super_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'He is the ______ (bad) singer I've ever heard.'",
+                  prompt: "He is the ______ (bad) singer I've ever heard.",
+                  correctAnswer: "worst",
+                  feedback: "'Bad' est un adjectif irrégulier, sa forme superlative est 'worst'."
+                },
+                {
+                  id: 'gram_comp_3',
+                  type: 'multiple-choice',
+                  question: "Choose the correct comparative: 'My car is ______ (expensive) than yours.'",
+                  options: ["expensiver", "more expensive", "most expensive", "expensivest"],
+                  correctAnswer: "more expensive",
+                  feedback: "Pour les adjectifs longs, utilisez 'more'."
+                },
+                {
+                  id: 'gram_super_3',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'This is the ______ (small) house on the street.'",
+                  prompt: "This is the ______ (small) house on the street.",
+                  correctAnswer: "smallest",
+                  feedback: "Pour les adjectifs courts, ajoutez '-est'."
+                },
+                {
+                  id: 'gram_comp_4',
+                  type: 'multiple-choice',
+                  question: "What is the comparative form of 'far'?",
+                  options: ["Farer", "Further", "Farthest", "More far"],
+                  correctAnswer: "Further",
+                  feedback: "'Far' a deux formes comparatives : 'farther' (distance physique) et 'further' (distance physique ou abstraite)."
+                },
+                {
+                  id: 'gram_super_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'She is the ______ (intelligent) student in the class.'",
+                  prompt: "She is the ______ (intelligent) student in the class.",
+                  correctAnswer: "most intelligent",
+                  feedback: "Pour les adjectifs longs, utilisez 'most'."
+                },
+                {
+                  id: 'gram_comp_5',
+                  type: 'multiple-choice',
+                  question: "Which sentence is correct?",
+                  options: ["He is more strong than me.", "He is stronger than me.", "He is strongest than me.", "He is much strong than me."],
+                  correctAnswer: "He is stronger than me.",
+                  feedback: "Pour les adjectifs d'une syllabe, ajoutez '-er'."
+                },
+                {
+                  id: 'gram_super_5',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'This is the ______ (happy) day of my life.'",
+                  prompt: "This is the ______ (happy) day of my life.",
+                  correctAnswer: "happiest",
+                  feedback: "Pour les adjectifs se terminant par 'y', changez 'y' en 'i' et ajoutez '-est'."
+                }
+              ]
+            },
+            {
+              title: "Present perfect",
+              exercises: [
+                {
+                  id: 'gram_pp_1',
+                  type: 'multiple-choice',
+                  question: "Which sentence uses the Present Perfect correctly?",
+                  options: ["I lived here for five years.", "I have lived here for five years.", "I am living here for five years.", "I live here since five years."],
+                  correctAnswer: "I have lived here for five years.",
+                  feedback: "Le Present Perfect est utilisé pour les actions qui ont commencé dans le passé et continuent jusqu'au présent, souvent avec 'for' ou 'since'."
+                },
+                {
+                  id: 'gram_pp_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the sentence: 'I ______ (not / see) him since last week.'",
+                  prompt: "I ______ (not / see) him since last week.",
+                  correctAnswer: "haven't seen",
+                  feedback: "Le Present Perfect est utilisé avec 'since' pour indiquer un point de départ dans le temps."
+                },
+                {
+                  id: 'gram_pp_3',
+                  type: 'multiple-choice',
+                  question: "Which sentence implies an action completed recently?",
+                  options: ["I just finished my homework.", "I finished my homework yesterday.", "I was finishing my homework.", "I will finish my homework."],
+                  correctAnswer: "I just finished my homework.",
+                  feedback: "Le Present Perfect avec 'just' indique une action récemment terminée."
+                },
+                {
+                  id: 'gram_pp_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'Have you ever ______ (visit) London?'",
+                  prompt: "Have you ever ______ (visit) London?",
+                  correctAnswer: "visited",
+                  feedback: "Le Present Perfect est utilisé avec 'ever' pour parler d'expériences de vie."
+                },
+                {
+                  id: 'gram_pp_5',
+                  type: 'multiple-choice',
+                  question: "Which sentence is incorrect?",
+                  options: ["She has already eaten.", "They have gone to the shop.", "He has lived here last year.", "We have never been there."],
+                  correctAnswer: "He has lived here last year.",
+                  feedback: "Le Present Perfect ne s'utilise pas avec des expressions de temps définies du passé comme 'last year'."
+                },
+                {
+                  id: 'gram_pp_6',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'I ______ (know) him for ten years.'",
+                  prompt: "I ______ (know) him for ten years.",
+                  correctAnswer: "have known",
+                  feedback: "Le Present Perfect est utilisé pour des états qui ont commencé dans le passé et continuent."
+                },
+                {
+                  id: 'gram_pp_7',
+                  type: 'multiple-choice',
+                  question: "What is the past participle of 'to break'?",
+                  options: ["Broke", "Broken", "Break", "Breaking"],
+                  correctAnswer: "Broken",
+                  feedback: "'Broken' est le participe passé de 'to break'."
+                },
+                {
+                  id: 'gram_pp_8',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'She ______ (not / finish) her work yet.'",
+                  prompt: "She ______ (not / finish) her work yet.",
+                  correctAnswer: "hasn't finished",
+                  feedback: "'Yet' est souvent utilisé dans les phrases négatives et interrogatives au Present Perfect."
+                },
+                {
+                  id: 'gram_pp_9',
+                  type: 'multiple-choice',
+                  question: "Which sentence implies a result in the present?",
+                  options: ["I lost my keys yesterday.", "I have lost my keys.", "I was losing my keys.", "I lose my keys."],
+                  correctAnswer: "I have lost my keys.",
+                  feedback: "Le Present Perfect est utilisé pour une action passée dont la conséquence est visible au présent."
+                },
+                {
+                  id: 'gram_pp_10',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'They ______ (live) in this house since 2010.'",
+                  prompt: "They ______ (live) in this house since 2010.",
+                  correctAnswer: "have lived",
+                  feedback: "Le Present Perfect est utilisé avec 'since' pour une durée."
+                }
+              ]
+            },
+            {
+              title: "Containers and quantifiers",
+              exercises: [
+                {
+                  id: 'gram_quant_1',
+                  type: 'multiple-choice',
+                  question: "Choose the correct quantifier: 'There isn't ______ milk in the fridge.'",
+                  options: ["many", "much", "a few", "some"],
+                  correctAnswer: "much",
+                  feedback: "'Much' est utilisé avec les noms indénombrables dans les phrases négatives et interrogatives."
+                },
+                {
+                  id: 'gram_quant_2',
+                  type: 'fill-in-the-blank',
+                  question: "Complete the sentence: 'I'd like a ______ of water, please.'",
+                  prompt: "I'd like a ______ of water, please.",
+                  correctAnswer: "glass",
+                  feedback: "'A glass of water' est une expression courante pour un contenant."
+                },
+                {
+                  id: 'gram_quant_3',
+                  type: 'multiple-choice',
+                  question: "Which quantifier is used with countable nouns?",
+                  options: ["Much", "Little", "Many", "Amount"],
+                  correctAnswer: "Many",
+                  feedback: "'Many' est utilisé avec les noms dénombrables."
+                },
+                {
+                  id: 'gram_quant_4',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'She has ______ friends in London.' (a small number)",
+                  prompt: "She has ______ friends in London.",
+                  correctAnswer: "a few",
+                  feedback: "'A few' est utilisé avec les noms dénombrables pour indiquer une petite quantité."
+                },
+                {
+                  id: 'gram_quant_5',
+                  type: 'multiple-choice',
+                  question: "Which phrase means 'a large quantity of' (for both countable and uncountable)?",
+                  options: ["A lot of", "Many", "Much", "Several"],
+                  correctAnswer: "A lot of",
+                  feedback: "'A lot of' peut être utilisé avec les noms dénombrables et indénombrables."
+                },
+                {
+                  id: 'gram_quant_6',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'Can I have a ______ of bread, please?'",
+                  prompt: "Can I have a ______ of bread, please?",
+                  correctAnswer: "slice",
+                  feedback: "'A slice of bread' est une tranche de pain."
+                },
+                {
+                  id: 'gram_quant_7',
+                  type: 'multiple-choice',
+                  question: "Which quantifier is used with uncountable nouns to mean 'a small quantity'?",
+                  options: ["Few", "Little", "Many", "Several"],
+                  correctAnswer: "Little",
+                  feedback: "'Little' est utilisé avec les noms indénombrables pour indiquer une petite quantité."
+                },
+                {
+                  id: 'gram_quant_8',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'There are ______ apples in the basket.' (a large quantity)",
+                  prompt: "There are ______ apples in the basket.",
+                  correctAnswer: "a lot of",
+                  feedback: "'A lot of' est approprié ici pour une grande quantité de noms dénombrables."
+                },
+                {
+                  id: 'gram_quant_9',
+                  type: 'multiple-choice',
+                  question: "Which container is used for a liquid like juice?",
+                  options: ["A loaf of", "A bar of", "A carton of", "A bunch of"],
+                  correctAnswer: "A carton of",
+                  feedback: "'A carton of' est utilisé pour des liquides emballés dans des cartons."
+                },
+                {
+                  id: 'gram_quant_10',
+                  type: 'fill-in-the-blank',
+                  question: "Complete: 'I need a ______ of chocolate for the recipe.'",
+                  prompt: "I need a ______ of chocolate for the recipe.",
+                  correctAnswer: "bar",
+                  feedback: "'A bar of chocolate' est une tablette de chocolat."
+                }
+              ]
+            }
+          ]
+        };
+
+        // Composant pour un exercice à choix multiple
+        const MultipleChoiceExercise = ({ exercise, onAnswer }) => {
+          const [selectedOption, setSelectedOption] = React.useState(null);
+          const [feedback, setFeedback] = React.useState('');
+          const [isCorrect, setIsCorrect] = React.useState(null);
+
+          const handleSubmit = () => {
+            const correct = selectedOption === exercise.correctAnswer; // Calculer la correction ici
+            setIsCorrect(correct);
+            if (correct) {
+              setFeedback("Correct! " + exercise.feedback);
+            } else {
+              setFeedback(`Incorrect. La bonne réponse était "${exercise.correctAnswer}". ` + exercise.feedback);
+            }
+            onAnswer(correct); // Passer la valeur correcte directement
+          };
+
+          const handleReset = () => {
+            setSelectedOption(null);
+            setFeedback('');
+            setIsCorrect(null);
+          };
+
+          return (
+            <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
+              <p className="text-lg font-semibold mb-4 text-gray-800">{exercise.question}</p>
+              <div className="space-y-3">
+                {exercise.options.map((option, index) => (
+                  <label key={index} className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name={`option-${exercise.id}`}
+                      value={option}
+                      checked={selectedOption === option}
+                      onChange={() => {
+                        setSelectedOption(option);
+                        // Clear feedback when a new option is selected after a submission
+                        if (isCorrect !== null) {
+                          setFeedback('');
+                          setIsCorrect(null);
+                        }
+                      }}
+                      className="form-radio h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+                      disabled={isCorrect !== null}
+                    />
+                    <span className="ml-3 text-gray-700 text-base">{option}</span>
+                  </label>
+                ))}
+              </div>
+              <div className="mt-6 flex space-x-4">
+                <button
+                  onClick={handleSubmit}
+                  disabled={selectedOption === null || isCorrect !== null}
+                  className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Vérifier
+                </button>
+                <button
+                  onClick={handleReset}
+                  className="px-6 py-2 bg-gray-300 text-gray-800 font-bold rounded-lg shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 transition duration-300 ease-in-out"
+                >
+                  Réinitialiser
+                </button>
+              </div>
+              {feedback && (
+                <div className={`mt-4 p-4 rounded-lg ${isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} border ${isCorrect ? 'border-green-300' : 'border-red-300'}`}>
+                  <p className="font-medium">{feedback}</p>
+                </div>
+              )}
+            </div>
+          );
+        };
+
+        // Composant pour un exercice à remplir les blancs
+        const FillInTheBlankExercise = ({ exercise, onAnswer }) => {
+          const [answer, setAnswer] = React.useState('');
+          const [feedback, setFeedback] = React.useState('');
+          const [isCorrect, setIsCorrect] = React.useState(null);
+
+          const handleSubmit = () => {
+            const correct = answer.trim().toLowerCase() === exercise.correctAnswer.toLowerCase(); // Calculer la correction ici
+            setIsCorrect(correct);
+            if (correct) {
+              setFeedback("Correct! " + exercise.feedback);
+            } else {
+              setFeedback(`Incorrect. La bonne réponse était "${exercise.correctAnswer}". ` + exercise.feedback);
+            }
+            onAnswer(correct); // Passer la valeur correcte directement
+          };
+
+          const handleReset = () => {
+            setAnswer('');
+            setFeedback('');
+            setIsCorrect(null);
+          };
+
+          // Trouver l'index du placeholder pour afficher le prompt correctement
+          const promptParts = exercise.prompt.split('______');
+
+          return (
+            <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
+              <p className="text-lg font-semibold mb-4 text-gray-800">
+                {promptParts[0]}
+                <input
+                  type="text"
+                  value={answer}
+                  onChange={(e) => {
+                    setAnswer(e.target.value);
+                    // Clear feedback when input changes after a submission
+                    if (isCorrect !== null) {
+                      setFeedback('');
+                      setIsCorrect(null);
+                    }
+                  }}
+                  className="border border-gray-300 rounded-md px-3 py-2 mx-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
+                  disabled={isCorrect !== null}
+                />
+                {promptParts[1]}
+              </p>
+              <div className="mt-6 flex space-x-4">
+                <button
+                  onClick={handleSubmit}
+                  disabled={answer.trim() === '' || isCorrect !== null}
+                  className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Vérifier
+                </button>
+                <button
+                  onClick={handleReset}
+                  className="px-6 py-2 bg-gray-300 text-gray-800 font-bold rounded-lg shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 transition duration-300 ease-in-out"
+                >
+                  Réinitialiser
+                </button>
+              </div>
+              {feedback && (
+                <div className={`mt-4 p-4 rounded-lg ${isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} border ${isCorrect ? 'border-green-300' : 'border-red-300'}`}>
+                  <p className="font-medium">{feedback}</p>
+                </div>
+              )}
+            </div>
+          );
+        };
+
+        // Composant principal de l'application
+        const App = () => {
+          const [selectedCategory, setSelectedCategory] = React.useState(null); // 'lexical' or 'grammatical'
+          const [selectedTopic, setSelectedTopic] = React.useState(null); // The actual topic object
+          const [currentExerciseIndex, setCurrentExerciseIndex] = React.useState(0);
+          const [score, setScore] = React.useState(0);
+          const [totalExercises, setTotalExercises] = React.useState(0);
+          const [showResults, setShowResults] = React.useState(false);
+
+          // Gère la sélection d'une catégorie (lexical ou grammatical)
+          const handleCategorySelect = (category) => {
+            setSelectedCategory(category);
+            setSelectedTopic(null); // Réinitialise le sujet sélectionné
+            setCurrentExerciseIndex(0); // Réinitialise l'index de l'exercice
+            setScore(0); // Réinitialise le score
+            setTotalExercises(0); // Réinitialise le total des exercices
+            setShowResults(false); // Cache les résultats
+          };
+
+          // Gère la sélection d'un sujet spécifique
+          const handleTopicSelect = (topic) => {
+            setSelectedTopic(topic);
+            setCurrentExerciseIndex(0);
+            setScore(0);
+            setTotalExercises(topic.exercises.length);
+            setShowResults(false);
+          };
+
+          // Gère la réponse à un exercice
+          const handleAnswer = (isCorrect) => {
+            if (isCorrect) {
+              setScore(prevScore => prevScore + 1);
+            }
+          };
+
+          // Passe à l'exercice suivant ou affiche les résultats
+          const handleNextExercise = () => {
+            if (currentExerciseIndex < selectedTopic.exercises.length - 1) {
+              setCurrentExerciseIndex(prevIndex => prevIndex + 1);
+            } else {
+              setShowResults(true);
+            }
+          };
+
+          // Retourne à la sélection des sujets
+          const handleBackToTopics = () => {
+            setSelectedTopic(null);
+            setShowResults(false);
+          };
+
+          // Retourne à la sélection des catégories
+          const handleBackToCategories = () => {
+            setSelectedCategory(null);
+            setSelectedTopic(null);
+            setShowResults(false);
+          };
+
+          // Rend l'exercice actuel
+          const renderExercise = () => {
+            if (!selectedTopic || showResults) return null;
+
+            const exercise = selectedTopic.exercises[currentExerciseIndex];
+            if (!exercise) return null;
+
+            switch (exercise.type) {
+              case 'multiple-choice':
+                return <MultipleChoiceExercise exercise={exercise} onAnswer={handleAnswer} />;
+              case 'fill-in-the-blank':
+                return <FillInTheBlankExercise exercise={exercise} onAnswer={handleAnswer} />;
+              default:
+                return <p className="text-red-500">Type d'exercice inconnu.</p>;
+            }
+          };
+
+          return (
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8 font-sans flex items-center justify-center">
+              <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-3xl border border-blue-200">
+                <h1 className="text-4xl font-extrabold text-center text-blue-800 mb-8">
+                  Révision Anglais pour Nathan
+                </h1>
+
+                {!selectedCategory && (
+                  <div className="flex flex-col items-center space-y-6">
+                    <p className="text-xl text-gray-700 mb-4">Choisis une catégorie de révision :</p>
+                    <button
+                      onClick={() => handleCategorySelect('lexical')}
+                      className="w-full py-4 px-6 bg-blue-600 text-white text-xl font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                    >
+                      Ressources Lexicales
+                    </button>
+                    <button
+                      onClick={() => handleCategorySelect('grammatical')}
+                      className="w-full py-4 px-6 bg-green-600 text-white text-xl font-semibold rounded-lg shadow-lg hover:bg-green-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
+                    >
+                      Ressources Grammaticales
+                    </button>
+                  </div>
+                )}
+
+                {selectedCategory && !selectedTopic && (
+                  <div className="flex flex-col items-center">
+                    <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+                      {selectedCategory === 'lexical' ? 'Sujets Lexicaux' : 'Sujets Grammaticaux'}
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                      {exercisesData[selectedCategory].map((topic, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleTopicSelect(topic)}
+                          className="p-4 bg-purple-100 text-purple-800 font-semibold rounded-lg shadow-md hover:bg-purple-200 transition duration-200 text-lg text-left transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                        >
+                          {topic.title}
+                        </button>
+                      ))}
+                    </div>
+                    <button
+                      onClick={handleBackToCategories}
+                      className="mt-8 px-6 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                    >
+                      Retour aux catégories
+                    </button>
+                  </div>
+                )}
+
+                {selectedTopic && !showResults && (
+                  <div>
+                    <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+                      {selectedTopic.title}
+                    </h2>
+                    <p className="text-center text-lg text-gray-600 mb-6">
+                      Question {currentExerciseIndex + 1} sur {totalExercises}
+                    </p>
+                    {renderExercise()}
+                    <div className="flex justify-center mt-6 space-x-4">
+                      <button
+                        onClick={handleNextExercise}
+                        className="px-8 py-3 bg-indigo-600 text-white font-bold rounded-lg shadow-lg hover:bg-indigo-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+                      >
+                        {currentExerciseIndex < selectedTopic.exercises.length - 1 ? 'Question Suivante' : 'Voir les Résultats'}
+                      </button>
+                      <button
+                        onClick={handleBackToTopics}
+                        className="px-8 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-lg hover:bg-gray-600 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-400"
+                      >
+                        Retour aux sujets
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {showResults && (
+                  <div className="text-center">
+                    <h2 className="text-3xl font-bold text-blue-800 mb-4">Résultats du Quiz</h2>
+                    <p className="text-2xl text-gray-700 mb-6">
+                      Vous avez obtenu {score} bonnes réponses sur {totalExercises} !
+                    </p>
+                    <div className="flex justify-center space-x-4">
+                      <button
+                        onClick={handleBackToTopics}
+                        className="px-8 py-3 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                      >
+                        Refaire un sujet
+                      </button>
+                      <button
+                        onClick={handleBackToCategories}
+                        className="px-8 py-3 bg-gray-500 text-white font-bold rounded-lg shadow-lg hover:bg-gray-600 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-400"
+                      >
+                        Retour aux catégories
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        };
+
+        // Rendu de l'application React dans l'élément avec l'ID 'root'
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
